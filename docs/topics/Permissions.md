@@ -61,6 +61,8 @@ Below is a table of all current permissions, their integer values in hexadecimal
 | MANAGE_EMOJIS \*      | `0x040000000` | Allows management and editing of emojis                                                                                            |              |
 | USE_SLASH_COMMANDS    | `0x080000000` | Allows members to use slash commands in text channels                                                                              | T            |
 | REQUEST_TO_SPEAK      | `0x100000000` | Allows for requesting to speak in stage channels. (_This permission is under active development and may be changed or removed._)   | S            |
+| USE_THREADS           | `0x200000000` | Allows for creating and participating in threads (not yet implemented)                                                             | T            |
+| USE_PRIVATE_THREADS   | `0x400000000` | Allows for creating and participating in private threads (not yet implemented)                                                     | T            |
 
 **\* These permissions require the owner account to use [two-factor authentication](#DOCS_TOPICS_OAUTH2/twofactor-authentication-requirement) when used on a guild that has server-wide 2FA enabled.**
 
@@ -154,6 +156,16 @@ Permissions in Discord are sometimes implicitly denied or allowed based on logic
 Denying `SEND_MESSAGES` implicitly denies `MENTION_EVERYONE`, `SEND_TTS_MESSAGES`, `ATTACH_FILES`, and `EMBED_LINKS`. Again, they are not explicitly denied when doing permissions calculations, but they are ignored because the user cannot do the base action of sending messages.
 
 There may be other cases in which certain permissions implicitly deny or allow other permissions. In all cases, it is based on logical conclusions about how a user with certain permissions should or should not interact with Discord.
+
+## Inherited Permissions (Threads)
+
+Threads inherit permissions from the parent channel (the channel they were created in).
+
+Users must have the `VIEW_CHANNEL` permission to view _any_ threads in the channel, even if they are directly mentioned or added to the thread.
+
+Users can **create** a thread if they have _both_ the `SEND_MESSAGES` permission and the appropriate threads permission (`USE_THREADS` for public threads, `USE_PRIVATE_THREADS` for private threads) on the parent channel.
+
+Users can **participate** in a thread if they have _either_ the `SEND_MESSAGES` permission and the appropriate threads permission (`USE_THREADS` for public threads, `USE_PRIVATE_THREADS` for private threads) on the parent channel.
 
 ## Permission Syncing
 
